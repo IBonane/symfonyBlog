@@ -8,7 +8,7 @@
 	<div class="container mt-5 overflow-hidden">
     <h2 class="title mt-3 mb-3 text-info">{{ article.title }}</h2>
 		<div class="img-fluid">
-			<img src="{{article.image}}" alt="{{article.image}}">
+			<img src="/assets/blog/images/{{article.image}}" alt="{{article.image}}">
 		</div>
 
 		<div class="content">
@@ -17,10 +17,11 @@
 				{{article.createdAt | date("d/m/Y")}}
 				à
 				{{article.createdAt | date("H:i")}}
+				par <span class="author">{{article.author}}</span>
 			</p>
             <h3 class="title mt-3 mb-3">{{ article.title }}</h3>
 			<p class="content" style="text-align:justify">
-				{{article.content}}
+				{{article.content | raw}}
 			</p> 
 		</div>
 	</div>
