@@ -37,6 +37,7 @@
 							</li>
 						</ul>
 						{% if app.user %}
+							<span class="m-1 mx-5 text-light h5" title="vous êtes connecté">{{app.user.email}}</span>
 							<a href="{{path('security_logout')}}" class="btn btn-success m-1">Deconnexion</a>
 						{% else %}
 							<a href="{{path('security_register')}}" class="btn btn-success m-1">Inscription</a>
