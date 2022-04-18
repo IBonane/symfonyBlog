@@ -7,3 +7,7 @@
 # helloName:
 #    path: /hello/{name}
 #    controller: App\Controller\HelloController::helloName
+# config/routes.yaml
+security_logout:
+    path: /logout
+    methods: GET

@@ -2,6 +2,7 @@
 <html lang="fr">
 	<head>
 		<meta charset="UTF-8">
+		<link rel="stylesheet" href="/assets/css/style.css">
 		<title>
 			{% block title %}Welcome!
 			{% endblock %}
@@ -35,13 +36,19 @@
 								</a>
 							</li>
 						</ul>
+						{% if app.user %}
+							<a href="{{path('security_logout')}}" class="btn btn-success m-1">Deconnexion</a>
+						{% else %}
+							<a href="{{path('security_register')}}" class="btn btn-success m-1">Inscription</a>
+							<a href="{{path('security_login')}}" class="btn btn-success m-1">Connexion</a>
+						{% endif %}
+
 					</div>
 				</div>
 			</nav>
 		</header>
 
-		<div class="container-fluid">
-			{% block body %}{% endblock %}
-		</div>
-	</body>
-</html>
+		<div class="container-fluid"> {% block body %}{% endblock %}
+			</div>
+		</body>
+	</html>

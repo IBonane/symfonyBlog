@@ -6,12 +6,18 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
+ * @UniqueEntity("username", message="cet nom d'utilisateur existe déjà !")
+ * @UniqueEntity("email", message="cet utilisateur existe déjà !")
  */
-class User
+class User implements PasswordAuthenticatedUserInterface, UserInterface
 {
     /**
      * @ORM\Id
@@ -21,26 +27,45 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $username;
 
     /**
+     *     @Assert\Length(  
+     *      min=3, 
+     *      max=50,
+     *      minMessage="Cette valeur est trop courte. Elle devrait comporter 3 caractères ou plus.",
+     *      maxMessage="Cette valeur est trop longue. Elle devrait comporter 50 caractères ou moins.",
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $firstname;
 
     /**
+     * @Assert\Length(
+     *      min=3, 
+     *      max=50,
+     *      minMessage="Cette valeur est trop courte. Elle devrait comporter 3 caractères ou plus.",
+     *      maxMessage="Cette valeur est trop longue. Elle devrait comporter 50 caractères ou moins.",
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $lastname;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @Assert\Email(message="Email non valide !")
+     * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
+     * @Assert\Length(
+     *      min=8, 
+     *      max=50, 
+     *      minMessage="Cette valeur est trop courte. Elle devrait comporter 8 caractères ou plus.",
+     *      maxMessage="Cette valeur est trop longue. Elle devrait comporter 50 caractères ou moins.",
+     * )
      * @ORM\Column(type="string", length=255)
      */
     private $password;
@@ -55,6 +80,14 @@ class User
      */
     private $articles;
 
+    /**
+     * @Assert\EqualTo(
+     *      propertyPath="password", 
+     *      message="Les deux mots de passe doivent être identiques"
+     * )
+     */
+    private $passwordConfirm;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -63,7 +96,7 @@ class User
 
     public function __toString()
     {
-        return $this->lastname.' '.$this->firstname;
+        return $this->lastname . ' ' . $this->firstname;
     }
 
     public function getId(): ?int
@@ -131,6 +164,18 @@ class User
         return $this;
     }
 
+    public function getPasswordConfirm(): ?string
+    {
+        return $this->passwordConfirm;
+    }
+
+    public function setPasswordConfirm(string $passwordConfirm): self
+    {
+        $this->passwordConfirm = $passwordConfirm;
+
+        return $this;
+    }
+
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
@@ -172,4 +217,10 @@ class User
 
         return $this;
     }
+
+    public function getRoles(){return ['USER_ROLE'];}
+    public function getSalt(){}
+    public function getUserIdentifier(){return $this->id;}
+    public function eraseCredentials(){}
+
 }

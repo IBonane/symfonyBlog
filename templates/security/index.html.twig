@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Inscription
+{% endblock %}
+
+{% block body %}
+	<div class="example-wrapper">
+		<div class="row">
+			<div class="col-md-12">
+				{% if valid == false %}
+					<div class="error m-lg-5">
+						{{ form_errors(form)}}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="d-flex justify-content-center mb-5">
+				<h1>{{ controller_name }} ✅</h1>
+			</div>
+		</div>
+
+		{{form_start(form)}}
+		<div class="row">
+			<div class="col-md-4">
+				{{form_row(form.username, {'label':"Nom d'utilisateur", 
+                    'attr':{'placeholder':"votre nom d'utilisateur"}})}}
+			</div>
+			<div class="col-md-4">
+				{{form_row(form.firstname, {'label':"Prénom", 
+                    'attr':{'placeholder':"votre prénom"}})}}
+			</div>
+			<div class="col-md-4">
+				{{form_row(form.lastname, {'label':"Nom", 
+                    'attr':{'placeholder':"votre nom"}})}}
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				{{form_row(form.email, {'label':"Email", 
+                    'attr':{'placeholder':"votre email"}})}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				{{form_row(form.password, {'label':"Mot de passe", 
+                    'attr':{'placeholder':"votre mot de passe"}})}}
+			</div>
+			<div class="col-md-6">
+				{{form_row(form.passwordConfirm, {'label':"Confirmation de mot de passe", 
+                    'attr':{'placeholder':"saisir à nouveau le mot de passe"}})}}
+			</div>
+		</div>
+
+		<button class="btn btn-success" type="submit" style="float:right">S'inscrire</button>
+		{{form_start(form)}}
+	</div>
+{% endblock %}
